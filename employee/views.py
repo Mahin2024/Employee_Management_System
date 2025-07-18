@@ -331,21 +331,7 @@ class leaveStatusViewset(ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        print(user.id,"...........Teamleader id")
-        profile = Employee.objects.filter(team_leader=user.id)
-
-        return profile
-    
-    def partial_update(self, request, *args, **kwargs):
-        pk = self.kwargs.get('pk')
-        # user = self.request.user
-        record = Employee.objects.get(id=pk)
-        print(record)
-        employee=Leave.objects.filter(employee_id=pk).last()
+        employee= Leave.objects.filter(employee__team_leader=user.id,status='pending')
         print(employee)
-        serializer = leaveStatusSerializer(employee, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+        return employee
+    
