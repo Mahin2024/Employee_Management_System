@@ -28,3 +28,8 @@ class leaveStatusSerializer(serializers.ModelSerializer):
         fields =['id','employee','policies','type','status','start_date','end_date','is_paid','reason']
         read_only_fields=['id','employee','policies','type','start_date','end_date','is_paid','reason']
 
+class paidLeaveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Leave
+        fields =['id','employee','policies','type','status','start_date','end_date','is_paid','reason']
+

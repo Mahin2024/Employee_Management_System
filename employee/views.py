@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from core.permissions import ProfileIsAuthenticated
 from core.authentication import encode_token
 from .models import Employee,Attendance,Leave
-from .serializers import loginSerializer,employeeSerializar,leaveSerializer, leaveStatusSerializer
+from .serializers import loginSerializer,employeeSerializar,leaveSerializer, leaveStatusSerializer, paidLeaveSerializer
 from django.contrib.auth.hashers import check_password,make_password
 from rest_framework.response import Response
 from rest_framework import status
@@ -335,3 +335,50 @@ class leaveStatusViewset(ModelViewSet):
         print(employee)
         return employee
     
+class paidLeaveViewset(APIView):
+    permission_classes = [ProfileIsAuthenticated]
+
+    def get(self, request):
+        user=self.request.user
+        leave=Leave.objects.filter(employee_id=user.id,status='approved',is_paid=True)
+        print(leave)
+         
+        take_leave = 0
+        paid=0
+        sick=0
+        casual=0
+        
+        for l in leave:
+
+            if l.type == 'half_day':
+                take_leave= 0.5
+            else: 
+                start = l.start_date.day
+                end = l.end_date.day
+                take_leave = (end - start + 1)
+
+            if l.policies.type == 'Paid':
+                paid += take_leave
+            elif l.policies.type == 'Casual':
+                casual += take_leave
+            elif l.policies.type == 'Sick':
+                sick += take_leave
+
+        print("Used Leaves",{"sick leave": sick, "casual leave": casual, "paid leave": paid})
+
+        sick_policy = LeavePolicy.objects.get(type='Sick')
+        casual_policy = LeavePolicy.objects.get(type='Casual')
+        paid_policy = LeavePolicy.objects.get(type='Paid')
+
+        sick_leave = float(sick_policy.leave_count) - float(sick)
+        casual_leave = float(casual_policy.leave_count) - float(casual)
+        paid_leave = float(paid_policy.leave_count) - float(paid)
+
+        if sick_leave<0:
+            sick_leave=0
+        if casual_leave<0:
+            casual_leave=0
+        if paid_leave<0:
+            paid_leave=0
+        return  Response({"sick leave": sick_leave, "casual leave": casual_leave, "paid leave": paid_leave})
+
