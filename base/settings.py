@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles', 
     'rest_framework',
+    'channels',
     'core',
     'communication',
     'employee.apps.EmployeeConfig',
@@ -72,9 +73,19 @@ TEMPLATES = [
         },
     },
 ]
+ASGI_APPLICATION = 'base.asgi.application'
 
 WSGI_APPLICATION = 'base.wsgi.application'
 
+# WebSocket Redis backend
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
