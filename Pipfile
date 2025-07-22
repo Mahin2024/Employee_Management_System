@@ -10,6 +10,7 @@ geopy = "*"
 apscheduler = "*"
 djangorestframework-simplejwt = "*"
 pillow = "*"
+daphne = "*"
 
 [dev-packages]
 
