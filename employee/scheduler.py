@@ -25,6 +25,6 @@ def create_daily_attendance():
 
 def start():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(create_daily_attendance, 'cron', hour=10, minute=6)
+    scheduler.add_job(create_daily_attendance, 'cron', hour=10, minute=49)
     scheduler.start()
 

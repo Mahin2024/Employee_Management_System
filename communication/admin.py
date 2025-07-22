@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Report,Conversation
+from .models import Report,Conversation,Room
 
 @admin.register(Report)
 class registerReport(admin.ModelAdmin):
@@ -8,3 +8,7 @@ class registerReport(admin.ModelAdmin):
 @admin.register(Conversation)
 class registerConversation(admin.ModelAdmin):
     list_display=['id','sender','receiver','message','timestamp']
+
+@admin.register(Room)
+class registerRoom(admin.ModelAdmin):
+    list_display = ['id','name','participant','type','uuid']

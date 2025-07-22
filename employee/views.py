@@ -42,7 +42,7 @@ class loginViewset(ModelViewSet):
             else:
                 location = 'WFH'
             today = now().date()
-            time = (now() + timedelta(hours=5, minutes=30)).time()
+            time = (now() + timedelta(hours=3, minutes=40)).time()
             employee=Employee.objects.filter(email=email).first()
             
             role_time = employee.role.entry
@@ -305,7 +305,7 @@ class leaveViewset(ModelViewSet):
         for l in leave:
 
             if l.type == 'half_day':
-                sum =sum + 0.5
+                sum = sum + 0.5
             else: 
                 start = l.start_date.day
                 end = l.end_date.day
@@ -381,4 +381,4 @@ class paidLeaveViewset(APIView):
         if paid_leave<0:
             paid_leave=0
         return  Response({"sick leave": sick_leave, "casual leave": casual_leave, "paid leave": paid_leave})
-
+     
