@@ -16,6 +16,9 @@ from django.utils.timezone import now,timedelta
 from geopy.distance import geodesic
 from rest_framework.exceptions import ValidationError
 from master.models import LeavePolicy
+from django.shortcuts import render
+from .utils import get_salary_data
+import calendar
 
 
 class loginViewset(ModelViewSet):
@@ -42,7 +45,7 @@ class loginViewset(ModelViewSet):
             else:
                 location = 'WFH'
             today = now().date()
-            time = (now() + timedelta(hours=3, minutes=40)).time()
+            time = (now() + timedelta(hours=5, minutes=30)).time()
             employee=Employee.objects.filter(email=email).first()
             
             role_time = employee.role.entry
@@ -73,16 +76,18 @@ class loginViewset(ModelViewSet):
                     employee=employee,
                     is_late=True,
                     date__month=today.month,
-                    date__year=today.year
+                    date__year=today.year,
+                 
                 ).count()
 
-                print(late_count)
+                print(late_count,'late_count')
                 email_id = employee.team_leader.email
                 print(email_id, "Team leader email")
 
                 month_name = datetime.now().strftime("%B")
 
-                if late_count >= 3:
+
+                if late_count >= 3 and attendance.date==today and attendance.is_late==True:
                     send_mail(
                         subject="Regarding Late Attendance",
                         message=(
@@ -381,4 +386,19 @@ class paidLeaveViewset(APIView):
         if paid_leave<0:
             paid_leave=0
         return  Response({"sick leave": sick_leave, "casual leave": casual_leave, "paid leave": paid_leave})
+    
+
+def salary_view(request):
+    salary_records = get_salary_data()
+    if salary_records:
+        month = calendar.month_name[salary_records[0]['month']]
+        year = salary_records[0]['year']
+    else:
+        month = ''
+        year = ''
+    return render(request, 'salary_template.html', {
+        'salary_records': salary_records,
+        'month': month,
+        'year': year
+    })
      

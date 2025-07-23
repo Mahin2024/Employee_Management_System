@@ -1,6 +1,6 @@
 from rest_framework.routers import DefaultRouter
 from django.urls import path, include
-from .views import loginViewset, employeeViewset,changePassword,forgotPassword,resetPassword,logout,leaveViewset,leaveStatusViewset,paidLeaveViewset
+from .views import loginViewset, employeeViewset,changePassword,forgotPassword,resetPassword,logout,leaveViewset,leaveStatusViewset,paidLeaveViewset,salary_view
 
 router = DefaultRouter()
 
@@ -16,5 +16,6 @@ urlpatterns = [
     path('resetpassword/', resetPassword.as_view(), name='resetpassword'),
     path('logout/',logout.as_view(),name='logout'),
     path('paidleave/',paidLeaveViewset.as_view(),name='paidleave'),
+    path('salary/', salary_view, name='salary-view'),
 
 ]

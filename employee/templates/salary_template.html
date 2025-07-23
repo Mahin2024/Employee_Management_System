@@ -1,0 +1,32 @@
+<!-- templates/salary_template.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Salary Records</title>
+</head>
+<body>
+    <h1>Salary Records for {{ month }} {{ year }}</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Employee</th>
+                <th>Present</th>
+                <th>Half Day</th>
+                <th>Paid Leave</th>
+                <th>Total Salary</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in salary_records %}
+                <tr>
+                    <td>{{ record.employee.name }}</td>
+                    <td>{{ record.present }}</td>
+                    <td>{{ record.half_day }}</td>
+                    <td>{{ record.paid_leave }}</td>
+                    <td>₹{{ record.total_salary }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
