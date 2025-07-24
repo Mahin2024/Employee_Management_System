@@ -1,6 +1,7 @@
 from django.db import models
 from core.models import CommonFields
 from employee.models import Employee
+import uuid
 
 class Report(CommonFields):
     employee=models.ForeignKey(Employee,on_delete=models.CASCADE,related_name='employee_report')
@@ -15,16 +16,16 @@ class Report(CommonFields):
 
 
 class Room(CommonFields):
-    name=models.CharField()
-    participant = models.ForeignKey(Employee,on_delete=models.CASCADE,related_name='employee_participent')
-    type =models.BooleanField(choices=[
+    name=models.CharField(null=True,blank=True)
+    participant = models.ForeignKey(Employee,null=True,blank=True,on_delete=models.CASCADE,related_name='employee_participent')
+    type =models.CharField(choices=[
         ('group','group'),
         ('direct','direct')
     ])
-    uuid=models.CharField(unique=True)
+    uuid=models.UUIDField(default=uuid.uuid4,unique=True)
 
     def __str__(self):
-        return self.name
+        return self.participant.name
    
     class Meta:
         verbose_name_plural = "Room"
@@ -51,7 +52,7 @@ class Participants(CommonFields):
     room = models.ForeignKey(Room, on_delete=models.CASCADE,related_name='participants_room')
 
     def __str__(self):
-        return self.participent.name
+        return str(self.room.uuid)
     
     class Meta:
-        verbose_name_plural = "Participent"
+        verbose_name_plural = "Participant"

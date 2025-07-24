@@ -8,12 +8,13 @@ django = "*"
 djangorestframework = "*"
 geopy = "*"
 apscheduler = "*"
-djangorestframework-simplejwt = "*"
 pillow = "*"
 daphne = "*"
 channels = "*"
 redis = "*"
 channels-redis = "*"
+django-admin-list-filter-dropdown = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 
