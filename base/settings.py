@@ -34,14 +34,16 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles', 
+    'django_admin_listfilter_dropdown',
     'rest_framework',
-    'channels',
     'core',
     'communication',
     'employee.apps.EmployeeConfig',
@@ -150,3 +152,10 @@ DEFAULT_FROM_EMAIL = 'suryapratap@aladinnserver.in'
 
 STRIPE_PUBLISHABLE_KEY = config('STRIPE_PUBLISHABLE_KEY')
 STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
+
+
+# import channels.layers
+# channel_layer = channels.layers.get_channel_layer()
+# from asgiref.sync import async_to_sync
+# async_to_sync(channel_layer.send)('test_channel', {'type': 'hello'})
+# async_to_sync(channel_layer.receive)('test_channel')

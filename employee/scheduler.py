@@ -96,5 +96,5 @@ def calculate_salary():
 def start():
     scheduler = BackgroundScheduler()
     scheduler.add_job(create_daily_attendance, 'cron', hour=10, minute=30)
-    scheduler.add_job(calculate_salary, 'cron', hour=14, minute=36)
+    scheduler.add_job(calculate_salary, 'cron',day ='last', hour=20, minute=0)
     scheduler.start()

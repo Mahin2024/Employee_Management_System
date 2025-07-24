@@ -13,7 +13,6 @@ class Report(CommonFields):
     class Meta:
         verbose_name_plural = "Report"
 
-# room- name, participant fk(empoyee), room type(group, direct),uuid
 
 class Room(CommonFields):
     name=models.CharField()
@@ -30,7 +29,6 @@ class Room(CommonFields):
     class Meta:
         verbose_name_plural = "Room"
 
-# chat- fk(room),sender(emp),receiver(emp),sent(true/false), delivered(t/f), seen(t/f),message(textfield),timestamp
 
 class Conversation(CommonFields):
     room = models.ForeignKey(Room, on_delete=models.CASCADE,related_name='room')
@@ -47,3 +45,13 @@ class Conversation(CommonFields):
     
     class Meta:
         verbose_name_plural = "Chat"
+
+class Participants(CommonFields):
+    participant = models.ForeignKey(Employee,on_delete=models.CASCADE,related_name='participants_participant')
+    room = models.ForeignKey(Room, on_delete=models.CASCADE,related_name='participants_room')
+
+    def __str__(self):
+        return self.participent.name
+    
+    class Meta:
+        verbose_name_plural = "Participent"
