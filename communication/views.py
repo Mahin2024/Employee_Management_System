@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
-from .serializers import createRoomSerializer
-from .models import Room
+from rest_framework.views import APIView
+from .serializers import createRoomSerializer,updateRoomSerializer,createChatSerializer,getChatSerializer
+from .models import Room,Participants,Conversation
 from core.permissions import ProfileIsAuthenticated
+from rest_framework.response import Response
 
 def index(request):
     return render(request, "chat/index.html")
@@ -22,5 +24,36 @@ class createRoomViewset(ModelViewSet):
         print(participant_ids)
         return {'owner_id':user.id,'participant_ids':participant_ids}
 
-        
+class updateRoom(ModelViewSet):
+    http_method_names=['get']
+    serializer_class=updateRoomSerializer
+    # queryset=Participants.objects.all()
 
+    def get_queryset(self):
+        uuid = self.request.data.get('uuid')
+        room = Room.objects.filter(uuid=uuid).first()
+        participants=Participants.objects.filter(room_id=room.id)
+        print("working", participants)
+        return participants
+
+
+class createChatViewset(ModelViewSet):
+    http_method_names=['post']
+    serializer_class = createChatSerializer
+    permission_classes = [ProfileIsAuthenticated]
+
+    
+    def get_serializer_context(self):
+        user =self.request.user
+        uuid=self.request.data.get('uuid')
+        return {'sender':user,'uuid':uuid}
+    
+
+class getChatViewset(ModelViewSet):
+    http_method_names = ['get']
+    serializer_class = getChatSerializer
+
+    def get_queryset(self):
+        uuid=self.kwargs.get('uuid')
+        room = Room.objects.get(uuid=uuid)
+        return Conversation.objects.filter(room=room)

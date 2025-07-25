@@ -32,9 +32,8 @@ class Room(CommonFields):
 
 
 class Conversation(CommonFields):
-    room = models.ForeignKey(Room, on_delete=models.CASCADE,related_name='room')
-    sender = models.ForeignKey(Employee,on_delete=models.CASCADE,related_name='sender')
-    receiver = models.ForeignKey(Employee,on_delete=models.CASCADE,related_name='receiver')
+    room = models.ForeignKey(Room,null=True,blank=True, on_delete=models.CASCADE,related_name='room')
+    sender = models.ForeignKey(Employee,null=True,blank=True,on_delete=models.CASCADE,related_name='sender')
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     sent = models.BooleanField(default=True)
@@ -42,7 +41,7 @@ class Conversation(CommonFields):
     seen = models.BooleanField(default=False)
     
     def __str__(self):
-        return self.sender.name
+        return self.message
     
     class Meta:
         verbose_name_plural = "Chat"

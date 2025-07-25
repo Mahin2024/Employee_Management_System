@@ -7,7 +7,7 @@ class registerReport(admin.ModelAdmin):
 
 @admin.register(Conversation)
 class registerConversation(admin.ModelAdmin):
-    list_display=['id','sender','receiver','message','timestamp']
+    list_display=['id','sender','room','message','timestamp','sent','delivered','seen']
 
 @admin.register(Room)
 class registerRoom(admin.ModelAdmin):
