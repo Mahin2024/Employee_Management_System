@@ -66,10 +66,11 @@ class loginViewset(ModelViewSet):
             attendance = Attendance.objects.filter(employee=employee, date=today).first()
 
             if attendance:
-                attendance.checkin = time.strftime("%H:%M:%S")
-                attendance.is_late = is_late
-                attendance.location = location
-                attendance.save()
+                if not attendance.checkin:  # True if None or ''
+                    attendance.checkin = time.strftime("%H:%M:%S")
+                    attendance.is_late = is_late
+                    attendance.location = location
+                    attendance.save()
 
                 # Late count for current month
                 late_count = Attendance.objects.filter(
@@ -102,8 +103,8 @@ class loginViewset(ModelViewSet):
                 return Response({
                     "message": "Attendance updated successfully.","token": token.data.get("token"),
                     "information":{"name":employee.name,"contact_number":employee.contact,
-                                   'checkin-time': time.strftime("%H:%M:%S"),'is_late': is_late,
-                                    "date":today,'location':location}},status=status.HTTP_200_OK)   
+                                   'checkin-time': attendance.checkin,'is_late': attendance.is_late,
+                                    "date":today,'location':attendance.location}},status=status.HTTP_200_OK)   
                 
 
             else:

@@ -41,51 +41,6 @@ def simulate_stripe_salary_payment(employee, amount):
     except Exception as e:
         print(f"[ERROR] Stripe payment failed for {employee.name}: {e}")
 
-# def calculate_salary():
-
-#     today = date.today()
-#     year = today.year
-#     month = today.month
-
-#     # Get number of days in the current month
-#     month_days = calendar.monthrange(year, month)[1]
-#     employee = Employee.objects.all()
-#     for e in employee:
-#         fullday = Attendance.objects.filter(employee_id=e.id,status='present').count()
-#         halfday_count = Attendance.objects.filter(employee_id=e.id,status='half_day').count()
-#         halfday_count*=0.5
-#         total=fullday+halfday_count
-#         # print(total,"total")
-#         paidleave = Leave.objects.filter(employee_id=e.id,status='approved',is_paid=True)
-#         # print(paidleave,'paidleave')
-#         sum=0
-#         for l in paidleave:
-#             start = l.start_date.day
-#             end = l.end_date.day
-#             sum += (end - start + 1)
-#         # print(sum,"paid leave sum")
-#         totaldays = total+sum
-#         # print("total days",totaldays)
-
-#         sal= e.role.salary
-#         # print(e)
-#         # print(sal)
-#         print("\n")
-#         try:
-#             daily_salary = float(sal) / month_days
-#             # print(daily_salary)
-#         except (TypeError, ValueError):
-#             print(f"Invalid salary for {e.name}: {sal}")
-#             continue
-    
-#         total_salary = round(totaldays * daily_salary, 2)
-#         print(f"→ Total salary for {e.name} in {calendar.month_name[month]}: ₹{total_salary}")
-
-#         # Simulate payment
-#         simulate_stripe_salary_payment(e, total_salary)
-
-#         from .views import get_salary_data
-
 def calculate_salary():
     records = get_salary_data()
     for r in records:
@@ -95,6 +50,6 @@ def calculate_salary():
 
 def start():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(create_daily_attendance, 'cron', hour=9, minute=19)
+    scheduler.add_job(create_daily_attendance, 'cron', hour=8, minute=0)
     scheduler.add_job(calculate_salary, 'cron',day ='last', hour=20, minute=0)
     scheduler.start()

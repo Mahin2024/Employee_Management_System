@@ -29,3 +29,6 @@ class registerAttendance(admin.ModelAdmin):
 @admin.register(Leave)
 class registerLeave(admin.ModelAdmin):
     list_display=['id','employee','policies','type','status','start_date','end_date','is_paid','reason']
+    search_fields = (
+       "status",
+    )

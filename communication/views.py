@@ -1,8 +1,9 @@
+import json
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
-from .serializers import createRoomSerializer,updateRoomSerializer,createChatSerializer,getChatSerializer
-from .models import Room,Participants,Conversation
+from .serializers import createRoomSerializer,updateRoomSerializer,createChatSerializer,getChatSerializer,createReportSerializer,getReportSerializer
+from .models import Room,Participants,Conversation,Report
 from core.permissions import ProfileIsAuthenticated
 from rest_framework.response import Response
 
@@ -57,3 +58,30 @@ class getChatViewset(ModelViewSet):
         uuid=self.kwargs.get('uuid')
         room = Room.objects.get(uuid=uuid)
         return Conversation.objects.filter(room=room)
+    
+class createReportViewset(ModelViewSet):
+    http_method_names=['post']
+    serializer_class = createReportSerializer
+    permission_classes = [ProfileIsAuthenticated]
+
+    def get_serializer_context(self):
+        user =self.request.user
+        remark=self.request.data.get('remark')
+
+        return {'employee':user,'remark':remark}
+    
+class getReportViewset(ModelViewSet):
+    http_method_names=['get']
+    serializer_class = getReportSerializer
+    permission_classes = [ProfileIsAuthenticated]
+
+    def get_queryset(self):
+        user=self.request.user
+        ids= self.request.query_params.get('id')
+        # id = json.loads(ids)
+        # print(ids,"jdfhdj")
+        # for i in ids:
+        employee = Report.objects.filter(employee__team_leader=user.id,employee_id=ids)
+        return employee
+
+                       

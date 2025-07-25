@@ -4,9 +4,9 @@ from employee.models import Employee
 import uuid
 
 class Report(CommonFields):
-    employee=models.ForeignKey(Employee,on_delete=models.CASCADE,related_name='employee_report')
-    remark = models.CharField()
-    date = models.DateTimeField()
+    employee=models.ForeignKey(Employee,null=True,blank=True,on_delete=models.CASCADE,related_name='employee_report')
+    remark = models.CharField(null=True,blank=True)
+    date = models.DateField(auto_now_add=True)
     
     def __str__(self):
         return self.employee.name
