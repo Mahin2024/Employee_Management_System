@@ -45,6 +45,7 @@ class Attendance(CommonFields):
 # salary- employee(fk), role(fk), amount, bonus, attendance(fk), deductions, net_salary
 class Salary(CommonFields):
     employee = models.ForeignKey(Employee,on_delete=models.CASCADE,related_name='employee_salary')
+    month = models.CharField(null=True,blank=True)
     amount = models.IntegerField()
     bonus = models.IntegerField(null=True,blank=True)
     deductions = models.IntegerField(null=True,blank=True)

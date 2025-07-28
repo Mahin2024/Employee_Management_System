@@ -24,7 +24,7 @@ class registerAttendance(admin.ModelAdmin):
 
 @admin.register(Salary)
 class registerAttendance(admin.ModelAdmin):
-    list_display=['id','employee','amount','bonus','deductions','net_salary']
+    list_display=['id','employee','month','amount','bonus','deductions','net_salary']
 
 @admin.register(Leave)
 class registerLeave(admin.ModelAdmin):
