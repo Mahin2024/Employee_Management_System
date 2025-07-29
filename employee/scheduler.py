@@ -5,7 +5,8 @@ import calendar
 import stripe
 from django.conf import settings
 from .utils import get_salary_data
-    
+from apscheduler.triggers.cron import CronTrigger
+
 def create_daily_attendance():
     today = date.today()
     weekday = today.weekday() 
@@ -46,12 +47,18 @@ def calculate_salary():
     for r in records:
         simulate_stripe_salary_payment(r['employee'], r['total_salary'])
         print(f"→ Total salary for {r['employee'].name}: ₹{r['total_salary']}\n")
+def run_if_last_day():
+    today = date.today()
+    last_day = calendar.monthrange(today.year, today.month)[1]
+    if today.day == last_day:
+        calculate_salary()
+
 
 
 def start():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(create_daily_attendance, 'cron', hour=9, minute=20)
-    # scheduler.add_job(calculate_salary, 'cron',day ='last', hour=20, minute=0)
-    scheduler.add_job(calculate_salary, 'cron', hour=10, minute=2)
+    scheduler.add_job(create_daily_attendance, 'cron', hour=9, minute=9)
+    # scheduler.add_job(calculate_salary, 'cron', hour=10, minute=2)
+    scheduler.add_job(run_if_last_day, CronTrigger(hour=20, minute=0))
 
     scheduler.start()
