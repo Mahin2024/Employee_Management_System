@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from core.permissions import ProfileIsAuthenticated
 from core.authentication import encode_token
 from .models import Employee,Attendance,Leave
-from .serializers import loginSerializer,employeeSerializar,leaveSerializer, leaveStatusSerializer, paidLeaveSerializer
+from .serializers import loginSerializer,employeeSerializar,leaveSerializer, leaveStatusSerializer
 from django.contrib.auth.hashers import check_password,make_password
 from rest_framework.response import Response
 from rest_framework import status

@@ -23,7 +23,7 @@ class createRoomSerializer(ModelSerializer):
         return room
     
 
-class updateRoomSerializer(ModelSerializer):
+class getRoomSerializer(ModelSerializer):
     class Meta:
         model=Participants
         fields ="__all__"

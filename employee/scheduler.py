@@ -57,8 +57,8 @@ def run_if_last_day():
 
 def start():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(create_daily_attendance, 'cron', hour=9, minute=9)
+    scheduler.add_job(create_daily_attendance, 'cron', hour=9, minute=5)
     # scheduler.add_job(calculate_salary, 'cron', hour=10, minute=2)
-    scheduler.add_job(run_if_last_day, CronTrigger(hour=20, minute=0))
+    scheduler.add_job(run_if_last_day, CronTrigger(hour=17, minute=40))
 
     scheduler.start()

@@ -2,7 +2,7 @@ import json
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
-from .serializers import createRoomSerializer,updateRoomSerializer,createChatSerializer,getChatSerializer,createReportSerializer,getReportSerializer
+from .serializers import createRoomSerializer,getRoomSerializer,createChatSerializer,getChatSerializer,createReportSerializer,getReportSerializer
 from .models import Room,Participants,Conversation,Report
 from core.permissions import ProfileIsAuthenticated
 from rest_framework.response import Response
@@ -25,9 +25,9 @@ class createRoomViewset(ModelViewSet):
         print(participant_ids)
         return {'owner_id':user.id,'participant_ids':participant_ids}
 
-class updateRoom(ModelViewSet):
+class getRoom(ModelViewSet):
     http_method_names=['get']
-    serializer_class=updateRoomSerializer
+    serializer_class=getRoomSerializer
     # queryset=Participants.objects.all()
 
     def get_queryset(self):
